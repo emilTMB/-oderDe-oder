@@ -121,7 +121,7 @@
       const encoded = encodeTextToImages(text, key);
       answer.innerHTML = encoded
         .map(
-          (num) => `<img src="/assets/${num}.jpg" alt="${num}"  class='img'/>`
+          (num) => `<img src="assets/${num}.jpg" alt="${num}"  class='img'/>`
         )
         .join("");
     });
