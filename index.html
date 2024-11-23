@@ -82,7 +82,7 @@
       const key = parseInt(inputKey.value) || 0;
       const text = inputIn.value;
       const encoded = encodeTextToImages(text, key);
-      answer.innerHTML = encoded.map(num => `<img src="assets/${num}.jpg" alt="${num}"  class='img'/>`).join("");
+      answer.innerHTML = encoded.map(num => `<img src="/assets/${num}.jpg" alt="${num}"  class='img'/>`).join("");
     });
 
     inputFrom.addEventListener("input", () => {
