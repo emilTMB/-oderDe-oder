@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/main.css" />
+    <title>coderDecoder</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <form>
+        <h2>Ключ (сдвиг)</h2>
+        <input type="number" class="inputKey" placeholder="Введите ключ" />
+        <h2>Текст для кодирования</h2>
+        <input type="text" class="inputIn" placeholder="Введите текст" />
+        <h2>Текст для декодирования</h2>
+        <input type="text" class="inputFrom" placeholder="Введите номера изображений" />
+      </form>
+      <div class="answer"></div>
+    </div>
+  </body>
+
+  <script>
+    // Массив букв русского алфавита
+    const alphabet = [
+      "а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", 
+      "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"
+    ];
+
+    // Привязываем 33 буквы к изображениям, остальные 5 — это пробелы
+    const images = Array.from({ length: 38 }, (_, i) => i + 1);
+
+    // Элементы DOM
+    const inputKey = document.querySelector(".inputKey");
+    const inputIn = document.querySelector(".inputIn");
+    const inputFrom = document.querySelector(".inputFrom");
+    const answer = document.querySelector(".answer");
+
+    // Функция кодирования текста в изображения
+    function encodeTextToImages(text, key) {
+      const lowerText = text.toLowerCase(); // Приводим к нижнему регистру
+      const result = [];
+
+      for (const char of lowerText) {
+        if (char === " ") {
+          // Если пробел, берем случайное изображение из "лишних"
+          result.push(images[33 + Math.floor(Math.random() * 5)]);
+        } else {
+          const index = alphabet.indexOf(char);
+          if (index !== -1) {
+            // Находим символ, применяем ключ (сдвиг)
+            const shiftedIndex = (index + key + alphabet.length) % alphabet.length;
+            result.push(images[shiftedIndex]);
+          }
+        }
+      }
+
+      return result; // Возвращаем массив номеров изображений
+    }
+
+    // Функция декодирования изображений в текст
+    function decodeImagesToText(imageNumbers, key) {
+      const result = [];
+
+      for (const imageNum of imageNumbers) {
+        const index = images.indexOf(Number(imageNum));
+        if (index < 33) {
+          // Если это буква
+          const shiftedIndex = (index - key + alphabet.length) % alphabet.length;
+          result.push(alphabet[shiftedIndex]);
+        } else {
+          // Если это пробел
+          result.push(" ");
+        }
+      }
+
+      return result.join(""); // Возвращаем текст
+    }
+
+    // Обработчики ввода
+    inputIn.addEventListener("input", () => {
+      const key = parseInt(inputKey.value) || 0;
+      const text = inputIn.value;
+      const encoded = encodeTextToImages(text, key);
+      answer.innerHTML = encoded.map(num => `<img src="/assets/${num}.jpg" alt="${num}"  class='img'/>`).join("");
+    });
+
+    inputFrom.addEventListener("input", () => {
+      const key = parseInt(inputKey.value) || 0;
+      const imageNumbers = inputFrom.value.split(/\s+/);
+      const decoded = decodeImagesToText(imageNumbers, key);
+      answer.textContent = decoded;
+    });
+  </script>
+</html>
