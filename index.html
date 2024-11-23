@@ -14,7 +14,11 @@
         <h2>Текст для кодирования</h2>
         <input type="text" class="inputIn" placeholder="Введите текст" />
         <h2>Текст для декодирования</h2>
-        <input type="text" class="inputFrom" placeholder="Введите номера изображений" />
+        <input
+          type="text"
+          class="inputFrom"
+          placeholder="Введите номера изображений"
+        />
       </form>
       <div class="answer"></div>
     </div>
@@ -23,8 +27,39 @@
   <script>
     // Массив букв русского алфавита
     const alphabet = [
-      "а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", 
-      "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ё",
+      "ж",
+      "з",
+      "и",
+      "й",
+      "к",
+      "л",
+      "м",
+      "н",
+      "о",
+      "п",
+      "р",
+      "с",
+      "т",
+      "у",
+      "ф",
+      "х",
+      "ц",
+      "ч",
+      "ш",
+      "щ",
+      "ъ",
+      "ы",
+      "ь",
+      "э",
+      "ю",
+      "я",
     ];
 
     // Привязываем 33 буквы к изображениям, остальные 5 — это пробелы
@@ -49,7 +84,8 @@
           const index = alphabet.indexOf(char);
           if (index !== -1) {
             // Находим символ, применяем ключ (сдвиг)
-            const shiftedIndex = (index + key + alphabet.length) % alphabet.length;
+            const shiftedIndex =
+              (index + key + alphabet.length) % alphabet.length;
             result.push(images[shiftedIndex]);
           }
         }
@@ -66,7 +102,8 @@
         const index = images.indexOf(Number(imageNum));
         if (index < 33) {
           // Если это буква
-          const shiftedIndex = (index - key + alphabet.length) % alphabet.length;
+          const shiftedIndex =
+            (index - key + alphabet.length) % alphabet.length;
           result.push(alphabet[shiftedIndex]);
         } else {
           // Если это пробел
@@ -82,7 +119,11 @@
       const key = parseInt(inputKey.value) || 0;
       const text = inputIn.value;
       const encoded = encodeTextToImages(text, key);
-      answer.innerHTML = encoded.map(num => `<img src="/assets/${num}.jpg" alt="${num}"  class='img'/>`).join("");
+      answer.innerHTML = encoded
+        .map(
+          (num) => `<img src="/assets/${num}.jpg" alt="${num}"  class='img'/>`
+        )
+        .join("");
     });
 
     inputFrom.addEventListener("input", () => {
